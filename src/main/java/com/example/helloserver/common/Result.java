@@ -1,32 +1,42 @@
 package com.example.helloserver.common;
 
 public class Result<T> {
-    private int code;
+    private Integer code;
     private String msg;
     private T data;
 
     public Result() {
     }
 
-    public Result(int code, String msg, T data) {
+    public Result(Integer code, String msg, T data) {
         this.code = code;
         this.msg = msg;
         this.data = data;
     }
 
+    // 静态工厂方法：成功回调
     public static <T> Result<T> success(T data) {
-        return new Result<>(200, "success", data);
+        Result<T> result = new Result<>();
+        result.code = ResultCode.SUCCESS.getCode();
+        result.msg = ResultCode.SUCCESS.getMsg();
+        result.data = data;
+        return result;
     }
 
-    public static <T> Result<T> error(int code, String msg) {
-        return new Result<>(code, msg, null);
+    // 静态工厂方法：失败回调
+    public static <T> Result<T> error(ResultCode resultCode) {
+        Result<T> result = new Result<>();
+        result.code = resultCode.getCode();
+        result.msg = resultCode.getMsg();
+        result.data = null;
+        return result;
     }
 
-    public int getCode() {
+    public Integer getCode() {
         return code;
     }
 
-    public void setCode(int code) {
+    public void setCode(Integer code) {
         this.code = code;
     }
 
