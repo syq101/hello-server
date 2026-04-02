@@ -14,7 +14,7 @@ public class UserController {
     private UserService userService;
 
     // 1. 新增用户（注册）- 路径为 POST /api/users
-    @PostMapping
+    @PostMapping("/register")
     public Result<String> register(@RequestBody UserDTO userDTO) {
         return userService.register(userDTO);
     }
@@ -25,10 +25,9 @@ public class UserController {
         return userService.login(userDTO);
     }
 
-    // 3. 获取用户信息（查）- 用于测试拦截器放行
+    // 3. 根据 ID 查询用户 - 路径为 GET /api/users/{id}
     @GetMapping("/{id}")
-    public Result<String> getUser(@PathVariable("id") String id) {
-        String data = "查询成功，正在返回 ID 为 " + id + " 的用户信息";
-        return Result.success(data);
+    public Result<String> getById(@PathVariable Long id) {
+        return userService.getUserById(id);
     }
 }
