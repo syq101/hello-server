@@ -13,6 +13,8 @@ public class MyBatisPlusConfig {
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
         // 添加分页插件，指定底层数据库类型为 PostgreSQL
+        // 添加分页插件，指定底层数据库类型为 PostgreSQL
+
         interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.POSTGRE_SQL));
         return interceptor;
     }
