@@ -17,11 +17,17 @@ public class AuthInterceptor implements HandlerInterceptor {
         // 2. 手写精细化放行规则
         // 规则 A：如果是 POST 请求，且路径精确等于 "/api/users"，则放行（允许注册）
         boolean isCreateUser = "POST".equalsIgnoreCase(method) && "/api/users".equals(uri);
-        // 规则 B：如果是 GET 请求，且路径以 "/api/users/" 开头，并且后面是数字 ID，则放行（允许查看用户信息）
+        // 规则 B：如果是 POST 请求，且路径精确等于 "/api/users/login"，则放行（允许登录）
+        boolean isLogin1 = "POST".equalsIgnoreCase(method) && "/api/users/login".equals(uri);
+        // 规则 C：如果是 POST 请求，且路径精确等于 "/api/login"，则放行（允许登录，兼容前端调用）
+        boolean isLogin2 = "POST".equalsIgnoreCase(method) && "/api/login".equals(uri);
+        // 规则 D：如果是 GET 请求，且路径以 "/api/users/" 开头，并且后面是数字 ID，则放行（允许查看用户信息）
         boolean isGetUser = "GET".equalsIgnoreCase(method) && uri.matches("/api/users/\\d+");
+        // 规则 E：如果是 GET 请求，且路径精确等于 "/api/users/page"，则放行（允许分页查询）
+        boolean isGetUsersPage = "GET".equalsIgnoreCase(method) && "/api/users/page".equals(uri);
 
         // 只要满足上述任一合法公开规则，直接放行，无需查验 Token
-        if (isCreateUser || isGetUser) {
+        if (isCreateUser || isLogin1 || isLogin2 || isGetUser || isGetUsersPage) {
             return true;
         }
 
