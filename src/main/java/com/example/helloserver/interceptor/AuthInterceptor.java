@@ -10,6 +10,12 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
+        // 放行用户详情接口，作业测试用
+        String requestURI = request.getRequestURI();
+        if (requestURI.startsWith("/api/users/")) {
+            return true; // 直接放行，不校验Token
+        }
+
         // 1. 获取本次请求的 HTTP 动词和具体路径
         String method = request.getMethod();
         String uri = request.getRequestURI();

@@ -3,6 +3,7 @@ package com.example.helloserver.controller;
 import com.example.helloserver.common.Result;
 import com.example.helloserver.dto.UserDTO;
 import com.example.helloserver.service.UserService;
+import com.example.helloserver.vo.UserDetailVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,5 +38,25 @@ public class UserController {
             @RequestParam(defaultValue = "1") Integer pageNum,
             @RequestParam(defaultValue = "5") Integer pageSize) {
         return userService.getUsersPage(pageNum, pageSize);
+    }
+
+    // 5. 查询用户详情(多表联查+Redis) - 路径为 GET /api/users/{id}/detail
+    @GetMapping("/{id}/detail")
+    public Result<UserDetailVo> getUserDetail(@PathVariable("id") Long userId) {
+        return userService.getUserDetail(userId);
+    }
+
+    // 6. 更新用户扩展信息 - 路径为 PUT /api/users/{id}/detail
+    @PutMapping("/{id}/detail")
+    public Result<String> updateUserInfo(@PathVariable("id") Long userId,
+                                         @RequestBody com.example.helloserver.entity.UserInfo userInfo) {
+        userInfo.setUserId(userId);
+        return userService.updateUserInfo(userInfo);
+    }
+
+    // 7. 删除用户 - 路径为 DELETE /api/users/{id}
+    @DeleteMapping("/{id}")
+    public Result<String> deleteUser(@PathVariable("id") Long userId) {
+        return userService.deleteUser(userId);
     }
 }
